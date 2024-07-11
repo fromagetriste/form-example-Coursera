@@ -39,14 +39,15 @@ function App() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Account created!");
-    clearForm();
+    e.preventDefault(); // so the page doesnt refresh when submitting the form
+    alert("Account created!"); // could be replaced with a success pop-up for example
+    clearForm(); // reset the states to empty strings to get a empty form
   };
 
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
+        {/* fieldset to gather the entire form */}
         <fieldset>
           <h2>Sign Up</h2>
           <div className="Field">
@@ -54,9 +55,10 @@ function App() {
               First name <sup>*</sup>
             </label>
             <input
-              value={firstName}
+              value={firstName} // we assigned the value attribute to the State
               onChange={(e) => {
                 setFirstName(e.target.value);
+                console.log(e); // just to see in the console, the event properties. To be removed in real life scenario
               }}
               placeholder="First name"
             />
@@ -88,24 +90,25 @@ function App() {
               Password <sup>*</sup>
             </label>
             <input
-              value={password.value} // car c'est un Object donc on accède à value
+              value={password.value} // we need to access password.value because it returns an Object
               type="password"
               onChange={(e) => {
-                setPassword({ ...password, value: e.target.value });
+                setPassword({ ...password, value: e.target.value }); // we use the spread operator not to over-ride the Object
               }}
               onBlur={() => {
-                setPassword({ ...password, isTouched: true });
+                setPassword({ ...password, isTouched: true }); // we need to use the onBlur event, which is called whenever the input loses focus, so that it toggles the isTouch property. It also exists the onFocus event, which is the opposite event (can be used to colorize borders for example)
               }}
               placeholder="Password"
             />
             {password.isTouched && password.value.length < 8 ? (
-              <PasswordErrorMessage />
-            ) : null}
+              <PasswordErrorMessage /> // we make sure the password is 8 letters +. It is triggered with the onBlur event (input password attribute)
+            ) : null}{" "}
           </div>
           <div className="Field">
             <label>
               Role <sup>*</sup>
-            </label>
+            </label>{" "}
+            {/* notice we set the onChange in the select HTML tag and not in the options */}
             <select value={role} onChange={(e) => setRole(e.target.value)}>
               <option value="role">Role</option>
               <option value="individual">Individual</option>
